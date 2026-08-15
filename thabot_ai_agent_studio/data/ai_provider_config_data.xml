@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="provider_config_gemini" model="thabot.ai.provider.config">
+            <field name="name">Gemini (default)</field>
+            <field name="provider">gemini</field>
+            <field name="is_default" eval="True"/>
+            <field name="api_key_parameter">thabot_ai_agent_studio.gemini_api_key</field>
+            <field name="api_key_env_var">GEMINI_API_KEY</field>
+            <field name="api_base_url">https://generativelanguage.googleapis.com/v1beta</field>
+            <field name="default_model">gemini-2.5-flash</field>
+            <field name="timeout">60</field>
+        </record>
+
+        <record id="provider_config_vertex_ai" model="thabot.ai.provider.config">
+            <field name="name">Vertex AI (default)</field>
+            <field name="provider">vertex_ai</field>
+            <field name="is_default" eval="True"/>
+            <field name="active" eval="False"/>
+            <field name="api_key_parameter">thabot_ai_agent_studio.vertex_ai_access_token</field>
+            <field name="api_key_env_var">VERTEX_AI_ACCESS_TOKEN</field>
+            <field name="api_base_url">https://{location}-aiplatform.googleapis.com/v1</field>
+            <field name="gcp_location">us-central1</field>
+            <field name="default_model">gemini-2.5-flash</field>
+            <field name="timeout">60</field>
+        </record>
+
+    </data>
+</odoo>

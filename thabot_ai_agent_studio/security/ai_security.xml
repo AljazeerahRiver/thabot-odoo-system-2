@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="module_category_thabot_ai" model="ir.module.category">
+        <field name="name">AI Agent Studio</field>
+        <field name="description">Access rights for the Thabot AI Agent Studio.</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="res_groups_privilege_thabot_ai" model="res.groups.privilege">
+        <field name="name">AI Agent Studio</field>
+        <field name="sequence">10</field>
+        <field name="category_id" ref="module_category_thabot_ai"/>
+    </record>
+
+    <record id="group_thabot_ai_user" model="res.groups">
+        <field name="name">User: chat with agents</field>
+        <field name="sequence">10</field>
+        <field name="privilege_id" ref="res_groups_privilege_thabot_ai"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Can chat with the agents and manage their own conversations.</field>
+    </record>
+
+    <record id="group_thabot_ai_manager" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="sequence">20</field>
+        <field name="privilege_id" ref="res_groups_privilege_thabot_ai"/>
+        <field name="implied_ids" eval="[(4, ref('thabot_ai_agent_studio.group_thabot_ai_user'))]"/>
+        <field name="comment">Can configure agents, tools and providers, and see every conversation.</field>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <data noupdate="1">
+
+        <record id="rule_ai_agent_company" model="ir.rule">
+            <field name="name">AI Agent: multi-company</field>
+            <field name="model_id" ref="model_thabot_ai_agent"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="rule_ai_provider_config_company" model="ir.rule">
+            <field name="name">AI Provider Configuration: multi-company</field>
+            <field name="model_id" ref="model_thabot_ai_provider_config"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="rule_ai_conversation_own" model="ir.rule">
+            <field name="name">AI Conversation: own conversations</field>
+            <field name="model_id" ref="model_thabot_ai_conversation"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('thabot_ai_agent_studio.group_thabot_ai_user'))]"/>
+        </record>
+
+        <record id="rule_ai_conversation_all" model="ir.rule">
+            <field name="name">AI Conversation: all conversations</field>
+            <field name="model_id" ref="model_thabot_ai_conversation"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('thabot_ai_agent_studio.group_thabot_ai_manager'))]"/>
+        </record>
+
+        <record id="rule_ai_message_own" model="ir.rule">
+            <field name="name">AI Message: own messages</field>
+            <field name="model_id" ref="model_thabot_ai_message"/>
+            <field name="domain_force">[('conversation_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('thabot_ai_agent_studio.group_thabot_ai_user'))]"/>
+        </record>
+
+        <record id="rule_ai_message_all" model="ir.rule">
+            <field name="name">AI Message: all messages</field>
+            <field name="model_id" ref="model_thabot_ai_message"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('thabot_ai_agent_studio.group_thabot_ai_manager'))]"/>
+        </record>
+
+    </data>
+
+</odoo>

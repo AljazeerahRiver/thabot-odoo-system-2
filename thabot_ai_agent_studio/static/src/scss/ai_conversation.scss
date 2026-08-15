@@ -1,0 +1,16 @@
+.o_thabot_ai_chat {
+    .o_thabot_ai_chat_list {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .o_thabot_ai_prompt {
+        border-top: 1px solid var(--border-color, #dee2e6);
+        padding-top: 0.75rem;
+
+        textarea {
+            min-height: 4rem;
+            width: 100%;
+        }
+    }
+}

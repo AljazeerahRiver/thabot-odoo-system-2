@@ -1,0 +1,391 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* thabot_ai_agent_studio
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-01 00:00+0000\n"
+"PO-Revision-Date: 2026-01-01 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.module.category,name:thabot_ai_agent_studio.module_category_thabot_ai
+#: model:ir.ui.menu,name:thabot_ai_agent_studio.menu_thabot_ai_root
+#: model:res.groups.privilege,name:thabot_ai_agent_studio.res_groups_privilege_thabot_ai
+msgid "AI Agent Studio"
+msgstr "استوديو وكلاء الذكاء الاصطناعي"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model,name:thabot_ai_agent_studio.model_thabot_ai_agent
+msgid "AI Agent"
+msgstr "وكيل ذكاء اصطناعي"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model,name:thabot_ai_agent_studio.model_thabot_ai_tool
+msgid "AI Agent Tool"
+msgstr "أداة وكيل الذكاء الاصطناعي"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model,name:thabot_ai_agent_studio.model_thabot_ai_conversation
+msgid "AI Conversation"
+msgstr "محادثة ذكاء اصطناعي"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model,name:thabot_ai_agent_studio.model_thabot_ai_message
+msgid "AI Conversation Message"
+msgstr "رسالة محادثة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model,name:thabot_ai_agent_studio.model_thabot_ai_provider_config
+msgid "AI Provider Configuration"
+msgstr "إعدادات مزوّد الذكاء الاصطناعي"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model,name:thabot_ai_agent_studio.model_thabot_ai_service
+msgid "AI Service"
+msgstr "خدمة الذكاء الاصطناعي"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.actions.act_window,name:thabot_ai_agent_studio.action_thabot_ai_agent
+#: model:ir.ui.menu,name:thabot_ai_agent_studio.menu_thabot_ai_agent
+msgid "Agents"
+msgstr "الوكلاء"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.actions.act_window,name:thabot_ai_agent_studio.action_thabot_ai_tool
+#: model:ir.ui.menu,name:thabot_ai_agent_studio.menu_thabot_ai_tool
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__tool_ids
+msgid "Tools"
+msgstr "الأدوات"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.actions.act_window,name:thabot_ai_agent_studio.action_thabot_ai_conversation
+#: model:ir.ui.menu,name:thabot_ai_agent_studio.menu_thabot_ai_conversation
+msgid "Conversations"
+msgstr "المحادثات"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.ui.menu,name:thabot_ai_agent_studio.menu_thabot_ai_configuration
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.ui.menu,name:thabot_ai_agent_studio.menu_thabot_ai_provider_config
+msgid "Providers"
+msgstr "المزوّدون"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.actions.act_window,name:thabot_ai_agent_studio.action_thabot_ai_provider_config
+msgid "Provider Configurations"
+msgstr "إعدادات المزوّدين"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__name
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__name
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_provider_config__name
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__code
+msgid "Code"
+msgstr "الرمز"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__description
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__description
+msgid "Description"
+msgstr "الوصف"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__active
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__active
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_provider_config__active
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__active
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_agent__state__active
+msgid "Active"
+msgstr "نشط"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__provider
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_provider_config__provider
+msgid "Provider"
+msgstr "المزوّد"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__provider_config_id
+msgid "Provider Configuration"
+msgstr "إعداد المزوّد"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__model_name
+msgid "Model"
+msgstr "النموذج"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__system_prompt
+msgid "System Prompt"
+msgstr "تعليمات النظام"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__temperature
+msgid "Temperature"
+msgstr "درجة الإبداع"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__max_tokens
+msgid "Max Output Tokens"
+msgstr "الحد الأقصى للرموز المُخرجة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_agent__state
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__state
+msgid "Status"
+msgstr "الحالة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_agent__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_agent__state__archived
+msgid "Archived"
+msgstr "مؤرشف"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_agent__provider__gemini
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_provider_config__provider__gemini
+msgid "Google Gemini"
+msgstr "جوجل جيميناي"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_agent__provider__vertex_ai
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_provider_config__provider__vertex_ai
+msgid "Google Vertex AI"
+msgstr "جوجل فيرتكس الذكاء الاصطناعي"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_agent__provider__custom
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_provider_config__provider__custom
+msgid "Custom"
+msgstr "مخصص"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__technical_name
+msgid "Technical Name"
+msgstr "الاسم التقني"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__parameters_schema
+msgid "Parameters (JSON Schema)"
+msgstr "المعاملات (مخطط JSON)"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__implementation_type
+msgid "Implementation Type"
+msgstr "نوع التنفيذ"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_tool__implementation_type__python_method
+msgid "Python Method"
+msgstr "دالة بايثون"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_tool__implementation_type__http_endpoint
+msgid "HTTP Endpoint"
+msgstr "نقطة اتصال HTTP"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_tool__implementation_type__odoo_model_method
+msgid "Odoo Model Method"
+msgstr "دالة نموذج أودو"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__target_model
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__target_model_id
+msgid "Target Model"
+msgstr "النموذج المستهدف"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__target_method
+msgid "Target Method"
+msgstr "الدالة المستهدفة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_tool__endpoint_url
+msgid "Endpoint URL"
+msgstr "رابط نقطة الاتصال"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__agent_id
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_message__agent_id
+msgid "Agent"
+msgstr "الوكيل"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__user_id
+msgid "Owner"
+msgstr "المالك"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_message__role
+msgid "Role"
+msgstr "الدور"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_message__role__system
+msgid "System"
+msgstr "النظام"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_message__role__user
+msgid "User"
+msgstr "المستخدم"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_message__role__assistant
+msgid "Assistant"
+msgstr "المساعد"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields.selection,name:thabot_ai_agent_studio.selection__thabot_ai_message__role__tool
+msgid "Tool"
+msgstr "الأداة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_message__content
+msgid "Content"
+msgstr "المحتوى"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_message__prompt_tokens
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__prompt_tokens
+msgid "Prompt Tokens"
+msgstr "رموز الطلب"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_message__completion_tokens
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__completion_tokens
+msgid "Completion Tokens"
+msgstr "رموز الإجابة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_message__total_tokens
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__total_tokens
+msgid "Total Tokens"
+msgstr "إجمالي الرموز"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__total_cost
+msgid "Total Cost"
+msgstr "إجمالي التكلفة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_message__cost
+msgid "Cost"
+msgstr "التكلفة"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_conversation__prompt_input
+msgid "Your Message"
+msgstr "رسالتك"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_provider_config__api_key_parameter
+msgid "API Key System Parameter"
+msgstr "معامل النظام لمفتاح الواجهة البرمجية"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_provider_config__api_key_env_var
+msgid "API Key Environment Variable"
+msgstr "متغيّر البيئة لمفتاح الواجهة البرمجية"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_provider_config__api_key_input
+msgid "Set API Key"
+msgstr "تعيين مفتاح الواجهة البرمجية"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_provider_config__api_key_set
+msgid "API Key Configured"
+msgstr "تم ضبط مفتاح الواجهة البرمجية"
+
+#. module: thabot_ai_agent_studio
+#: model:ir.model.fields,field_description:thabot_ai_agent_studio.field_thabot_ai_provider_config__api_base_url
+msgid "API Base URL"
+msgstr "الرابط الأساسي للواجهة البرمجية"
+
+#. module: thabot_ai_agent_studio
+#: model_terms:ir.ui.view,arch_db:thabot_ai_agent_studio.view_thabot_ai_agent_form
+msgid "Activate"
+msgstr "تفعيل"
+
+#. module: thabot_ai_agent_studio
+#: model_terms:ir.ui.view,arch_db:thabot_ai_agent_studio.view_thabot_ai_agent_form
+msgid "Start Conversation"
+msgstr "بدء محادثة"
+
+#. module: thabot_ai_agent_studio
+#: model_terms:ir.ui.view,arch_db:thabot_ai_agent_studio.view_thabot_ai_agent_form
+msgid "Reset to Draft"
+msgstr "إعادة إلى مسودة"
+
+#. module: thabot_ai_agent_studio
+#: model_terms:ir.ui.view,arch_db:thabot_ai_agent_studio.view_thabot_ai_agent_form
+msgid "Archive"
+msgstr "أرشفة"
+
+#. module: thabot_ai_agent_studio
+#: model_terms:ir.ui.view,arch_db:thabot_ai_agent_studio.view_thabot_ai_conversation_form
+msgid "Send"
+msgstr "إرسال"
+
+#. module: thabot_ai_agent_studio
+#: model_terms:ir.ui.view,arch_db:thabot_ai_agent_studio.view_thabot_ai_conversation_form
+msgid "Close"
+msgstr "إغلاق"
+
+#. module: thabot_ai_agent_studio
+#: model_terms:ir.ui.view,arch_db:thabot_ai_agent_studio.view_thabot_ai_conversation_form
+msgid "Reopen"
+msgstr "إعادة فتح"
+
+#. module: thabot_ai_agent_studio
+#: code:addons/thabot_ai_agent_studio/models/ai_conversation.py:0
+msgid "Please type a message before sending it."
+msgstr "الرجاء كتابة رسالة قبل الإرسال."
+
+#. module: thabot_ai_agent_studio
+#: code:addons/thabot_ai_agent_studio/models/ai_conversation.py:0
+msgid "This conversation is closed."
+msgstr "هذه المحادثة مغلقة."
+
+#. module: thabot_ai_agent_studio
+#: code:addons/thabot_ai_agent_studio/models/ai_service.py:0
+msgid "The AI provider could not be reached: %(error)s"
+msgstr "تعذّر الوصول إلى مزوّد الذكاء الاصطناعي: %(error)s"
+
+#. module: thabot_ai_agent_studio
+#: code:addons/thabot_ai_agent_studio/models/ai_service.py:0
+msgid "The AI provider returned an invalid response."
+msgstr "أعاد مزوّد الذكاء الاصطناعي استجابة غير صالحة."
+
+#. module: thabot_ai_agent_studio
+#: code:addons/thabot_ai_agent_studio/models/ai_provider_config.py:0
+msgid ""
+"No API key found for %(name)s. Set the system parameter '%(param)s' or the "
+"environment variable '%(env)s'."
+msgstr ""
+"لم يتم العثور على مفتاح واجهة برمجية لـ %(name)s. قم بضبط معامل النظام "
+"'%(param)s' أو متغيّر البيئة '%(env)s'."

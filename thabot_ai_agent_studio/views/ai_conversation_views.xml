@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_thabot_ai_conversation_list" model="ir.ui.view">
+        <field name="name">thabot.ai.conversation.list</field>
+        <field name="model">thabot.ai.conversation</field>
+        <field name="arch" type="xml">
+            <list string="Conversations">
+                <field name="name"/>
+                <field name="agent_id"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="message_count"/>
+                <field name="total_tokens"/>
+                <field name="total_cost" widget="monetary"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="create_date"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'open'"
+                       decoration-muted="state == 'closed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_thabot_ai_conversation_form" model="ir.ui.view">
+        <field name="name">thabot.ai.conversation.form</field>
+        <field name="model">thabot.ai.conversation</field>
+        <field name="arch" type="xml">
+            <form string="Conversation">
+                <header>
+                    <button name="action_close" type="object" string="Close"
+                            invisible="state == 'closed'"/>
+                    <button name="action_reopen" type="object" string="Reopen"
+                            invisible="state == 'open'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="open,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="agent_id" options="{'no_create': True}"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="message_count"/>
+                            <field name="total_tokens"/>
+                            <field name="total_cost" widget="monetary"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <div class="o_thabot_ai_chat mt-3">
+                        <field name="message_ids" nolabel="1" readonly="1">
+                            <list class="o_thabot_ai_chat_list" create="false" edit="false">
+                                <field name="create_date" string="Time" widget="datetime"/>
+                                <field name="role" widget="badge"
+                                       decoration-info="role == 'user'"
+                                       decoration-success="role == 'assistant'"
+                                       decoration-warning="role == 'tool'"/>
+                                <field name="content"/>
+                                <field name="total_tokens" optional="show"/>
+                                <field name="cost" widget="monetary" optional="hide"/>
+                                <field name="currency_id" column_invisible="True"/>
+                            </list>
+                        </field>
+                        <div class="o_thabot_ai_prompt mt-3" invisible="state == 'closed'">
+                            <field name="prompt_input" nolabel="1"
+                                   placeholder="Ask the agent something..."/>
+                            <button name="action_send_message" type="object" string="Send"
+                                    class="btn-primary mt-2" icon="fa-paper-plane"/>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_thabot_ai_conversation_search" model="ir.ui.view">
+        <field name="name">thabot.ai.conversation.search</field>
+        <field name="model">thabot.ai.conversation</field>
+        <field name="arch" type="xml">
+            <search string="Conversations">
+                <field name="name"/>
+                <field name="agent_id"/>
+                <field name="user_id"/>
+                <filter name="filter_my" string="My Conversations" domain="[('user_id', '=', uid)]"/>
+                <separator/>
+                <filter name="filter_open" string="Open" domain="[('state', '=', 'open')]"/>
+                <filter name="filter_closed" string="Closed" domain="[('state', '=', 'closed')]"/>
+                <separator/>
+                <filter name="filter_inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter name="group_agent" string="Agent" domain="[]" context="{'group_by': 'agent_id'}"/>
+                    <filter name="group_user" string="Owner" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_create_date" string="Creation Date" domain="[]"
+                            context="{'group_by': 'create_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_thabot_ai_conversation" model="ir.actions.act_window">
+        <field name="name">Conversations</field>
+        <field name="res_model">thabot.ai.conversation</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_my': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No conversation yet</p>
+            <p>Open an active agent and click "Start Conversation".</p>
+        </field>
+    </record>
+
+    <record id="view_thabot_ai_message_list" model="ir.ui.view">
+        <field name="name">thabot.ai.message.list</field>
+        <field name="model">thabot.ai.message</field>
+        <field name="arch" type="xml">
+            <list string="Messages" create="false">
+                <field name="create_date"/>
+                <field name="conversation_id"/>
+                <field name="role"/>
+                <field name="content"/>
+                <field name="prompt_tokens"/>
+                <field name="completion_tokens"/>
+                <field name="total_tokens"/>
+                <field name="cost" widget="monetary"/>
+                <field name="currency_id" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+</odoo>
