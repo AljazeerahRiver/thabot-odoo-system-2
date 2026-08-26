@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="demo_conversation_warranty" model="thabot.ai.conversation">
+            <field name="name">Camera warranty check - demo</field>
+            <field name="agent_id" ref="agent_camera_support"/>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="state">open</field>
+        </record>
+
+        <record id="demo_message_user" model="thabot.ai.message">
+            <field name="conversation_id" ref="demo_conversation_warranty"/>
+            <field name="sequence">10</field>
+            <field name="role">user</field>
+            <field name="content">The camera at the main gate stopped recording at night. Serial TH-CAM-4821.</field>
+        </record>
+
+        <record id="demo_message_assistant" model="thabot.ai.message">
+            <field name="conversation_id" ref="demo_conversation_warranty"/>
+            <field name="sequence">20</field>
+            <field name="role">assistant</field>
+            <field name="content">Thank you. Serial TH-CAM-4821 is still under warranty until next year.
+Night recording usually stops when infrared night vision is disabled or the IR filter is
+dirty. Please check the night mode setting first; if the issue remains, I can schedule an
+on-site maintenance visit.</field>
+            <field name="prompt_tokens">64</field>
+            <field name="completion_tokens">58</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Tools available to the Thabot agents -->
+        <record id="tool_search_partner" model="thabot.ai.tool">
+            <field name="name">Search Customer</field>
+            <field name="technical_name">search_customer</field>
+            <field name="implementation_type">odoo_model_method</field>
+            <field name="target_model_id" ref="base.model_res_partner"/>
+            <field name="target_method">search_read</field>
+            <field name="description">Find a Thabot customer by name, phone number or email address.</field>
+            <field name="parameters_schema">{
+    "type": "object",
+    "properties": {
+        "query": {
+            "type": "string",
+            "description": "Customer name, phone number or email address."
+        }
+    },
+    "required": ["query"]
+}</field>
+        </record>
+
+        <record id="tool_lookup_camera_warranty" model="thabot.ai.tool">
+            <field name="name">Look Up Camera Warranty</field>
+            <field name="technical_name">lookup_camera_warranty</field>
+            <field name="implementation_type">python_method</field>
+            <field name="target_method">lookup_camera_warranty</field>
+            <field name="description">Return the warranty status of a smart camera from its serial number.</field>
+            <field name="parameters_schema">{
+    "type": "object",
+    "properties": {
+        "serial_number": {
+            "type": "string",
+            "description": "Serial number printed on the camera label."
+        }
+    },
+    "required": ["serial_number"]
+}</field>
+        </record>
+
+        <record id="tool_schedule_maintenance_visit" model="thabot.ai.tool">
+            <field name="name">Schedule Maintenance Visit</field>
+            <field name="technical_name">schedule_maintenance_visit</field>
+            <field name="implementation_type">odoo_model_method</field>
+            <field name="target_model_id" ref="mail.model_mail_activity"/>
+            <field name="target_method">create</field>
+            <field name="description">Plan an on-site maintenance visit for an installed camera system.</field>
+            <field name="parameters_schema">{
+    "type": "object",
+    "properties": {
+        "customer": {"type": "string", "description": "Customer name."},
+        "city": {"type": "string", "description": "City of the installation site."},
+        "date": {"type": "string", "description": "Requested date, ISO 8601 (YYYY-MM-DD)."},
+        "issue": {"type": "string", "description": "Short description of the reported issue."}
+    },
+    "required": ["customer", "date"]
+}</field>
+        </record>
+
+        <!-- Agents -->
+        <record id="agent_camera_support" model="thabot.ai.agent">
+            <field name="name">Smart Camera Support Agent</field>
+            <field name="code">camera_support</field>
+            <field name="provider">gemini</field>
+            <field name="provider_config_id" ref="provider_config_gemini"/>
+            <field name="model_name">gemini-2.5-flash</field>
+            <field name="temperature">0.4</field>
+            <field name="max_tokens">2048</field>
+            <field name="state">draft</field>
+            <field name="description">First-line support for installed smart camera systems.</field>
+            <field name="system_prompt">You are the technical support assistant of Thabot (شركة ثابوت), a Saudi company
+selling and maintaining smart cameras.
+
+Guidelines:
+- Answer in the language of the customer (Arabic or English).
+- Ask for the camera serial number before giving warranty information.
+- Use the available tools to look up customers, warranties and maintenance visits.
+- Never invent a warranty status, a price or an availability date.
+- Escalate to a human technician when the issue requires an on-site intervention.</field>
+            <field name="tool_ids" eval="[(6, 0, [
+                ref('tool_search_partner'),
+                ref('tool_lookup_camera_warranty'),
+                ref('tool_schedule_maintenance_visit'),
+            ])]"/>
+        </record>
+
+        <record id="agent_sales_advisor" model="thabot.ai.agent">
+            <field name="name">Camera Sales Advisor</field>
+            <field name="code">camera_sales</field>
+            <field name="provider">gemini</field>
+            <field name="provider_config_id" ref="provider_config_gemini"/>
+            <field name="model_name">gemini-2.5-flash</field>
+            <field name="temperature">0.7</field>
+            <field name="max_tokens">2048</field>
+            <field name="state">draft</field>
+            <field name="description">Helps the sales team size and quote smart camera installations.</field>
+            <field name="system_prompt">You are the pre-sales advisor of Thabot (شركة ثابوت), a Saudi smart camera company.
+
+Guidelines:
+- Answer in the language of the customer (Arabic or English).
+- Qualify the need first: site type, number of entrances, indoor or outdoor, night vision,
+  storage duration and remote access requirements.
+- Recommend a camera count and a storage sizing, and explain the reasoning briefly.
+- Quote only products and prices confirmed by the tools; never invent a price.
+- Comply with Saudi privacy expectations: remind the customer about signage and
+  camera placement rules when cameras cover public or shared areas.</field>
+            <field name="tool_ids" eval="[(6, 0, [ref('tool_search_partner')])]"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_thabot_ai_agent_user,thabot.ai.agent.user,model_thabot_ai_agent,thabot_ai_agent_studio.group_thabot_ai_user,1,0,0,0
+access_thabot_ai_agent_manager,thabot.ai.agent.manager,model_thabot_ai_agent,thabot_ai_agent_studio.group_thabot_ai_manager,1,1,1,1
+access_thabot_ai_tool_user,thabot.ai.tool.user,model_thabot_ai_tool,thabot_ai_agent_studio.group_thabot_ai_user,1,0,0,0
+access_thabot_ai_tool_manager,thabot.ai.tool.manager,model_thabot_ai_tool,thabot_ai_agent_studio.group_thabot_ai_manager,1,1,1,1
+access_thabot_ai_conversation_user,thabot.ai.conversation.user,model_thabot_ai_conversation,thabot_ai_agent_studio.group_thabot_ai_user,1,1,1,1
+access_thabot_ai_conversation_manager,thabot.ai.conversation.manager,model_thabot_ai_conversation,thabot_ai_agent_studio.group_thabot_ai_manager,1,1,1,1
+access_thabot_ai_message_user,thabot.ai.message.user,model_thabot_ai_message,thabot_ai_agent_studio.group_thabot_ai_user,1,1,1,1
+access_thabot_ai_message_manager,thabot.ai.message.manager,model_thabot_ai_message,thabot_ai_agent_studio.group_thabot_ai_manager,1,1,1,1
+access_thabot_ai_provider_config_user,thabot.ai.provider.config.user,model_thabot_ai_provider_config,thabot_ai_agent_studio.group_thabot_ai_user,1,0,0,0
+access_thabot_ai_provider_config_manager,thabot.ai.provider.config.manager,model_thabot_ai_provider_config,thabot_ai_agent_studio.group_thabot_ai_manager,1,1,1,1

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_thabot_ai_agent_list" model="ir.ui.view">
+        <field name="name">thabot.ai.agent.list</field>
+        <field name="model">thabot.ai.agent</field>
+        <field name="arch" type="xml">
+            <list string="AI Agents">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="provider"/>
+                <field name="model_name"/>
+                <field name="conversation_count" string="Conversations"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'active'"
+                       decoration-muted="state == 'archived'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_thabot_ai_agent_form" model="ir.ui.view">
+        <field name="name">thabot.ai.agent.form</field>
+        <field name="model">thabot.ai.agent</field>
+        <field name="arch" type="xml">
+            <form string="AI Agent">
+                <header>
+                    <button name="action_activate" type="object" string="Activate"
+                            class="btn-primary" invisible="state == 'active'"/>
+                    <button name="action_start_conversation" type="object" string="Start Conversation"
+                            class="btn-secondary" invisible="state != 'active'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            invisible="state == 'draft'"/>
+                    <button name="action_archive_agent" type="object" string="Archive"
+                            invisible="state == 'archived'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_conversations" type="object"
+                                class="oe_stat_button" icon="fa-comments">
+                            <field name="conversation_count" string="Conversations" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Smart Camera Support Agent"/></h1>
+                        <label for="code" class="oe_edit_only"/>
+                        <h3><field name="code" placeholder="e.g. camera_support"/></h3>
+                    </div>
+                    <group>
+                        <group string="Model">
+                            <field name="provider"/>
+                            <field name="provider_config_id"
+                                   options="{'no_create': True}"
+                                   placeholder="Default configuration of the provider"/>
+                            <field name="model_name"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Generation">
+                            <field name="temperature"/>
+                            <field name="max_tokens"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="System Prompt" name="system_prompt">
+                            <field name="system_prompt"
+                                   placeholder="You are the support assistant of Thabot, a Saudi smart camera company..."/>
+                        </page>
+                        <page string="Tools" name="tools">
+                            <field name="tool_ids" widget="many2many">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="technical_name"/>
+                                    <field name="implementation_type"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="What is this agent used for?"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_thabot_ai_agent_search" model="ir.ui.view">
+        <field name="name">thabot.ai.agent.search</field>
+        <field name="model">thabot.ai.agent</field>
+        <field name="arch" type="xml">
+            <search string="AI Agents">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="model_name"/>
+                <field name="tool_ids"/>
+                <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_active" string="Active" domain="[('state', '=', 'active')]"/>
+                <separator/>
+                <filter name="filter_gemini" string="Gemini" domain="[('provider', '=', 'gemini')]"/>
+                <filter name="filter_vertex" string="Vertex AI" domain="[('provider', '=', 'vertex_ai')]"/>
+                <separator/>
+                <filter name="filter_inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter name="group_provider" string="Provider" domain="[]" context="{'group_by': 'provider'}"/>
+                    <filter name="group_state" string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_thabot_ai_agent" model="ir.actions.act_window">
+        <field name="name">Agents</field>
+        <field name="res_model">thabot.ai.agent</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first AI agent</p>
+            <p>Give it a system prompt, pick a model, attach tools, and start chatting.</p>
+        </field>
+    </record>
+
+</odoo>

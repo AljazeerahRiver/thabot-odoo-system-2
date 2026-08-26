@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_thabot_ai_root"
+              name="AI Agent Studio"
+              web_icon="thabot_ai_agent_studio,static/description/icon.png"
+              groups="thabot_ai_agent_studio.group_thabot_ai_user"
+              sequence="90"/>
+
+    <menuitem id="menu_thabot_ai_agent"
+              name="Agents"
+              parent="menu_thabot_ai_root"
+              action="action_thabot_ai_agent"
+              sequence="10"/>
+
+    <menuitem id="menu_thabot_ai_conversation"
+              name="Conversations"
+              parent="menu_thabot_ai_root"
+              action="action_thabot_ai_conversation"
+              sequence="20"/>
+
+    <menuitem id="menu_thabot_ai_tool"
+              name="Tools"
+              parent="menu_thabot_ai_root"
+              action="action_thabot_ai_tool"
+              groups="thabot_ai_agent_studio.group_thabot_ai_manager"
+              sequence="30"/>
+
+    <menuitem id="menu_thabot_ai_configuration"
+              name="Configuration"
+              parent="menu_thabot_ai_root"
+              groups="thabot_ai_agent_studio.group_thabot_ai_manager"
+              sequence="90"/>
+
+    <menuitem id="menu_thabot_ai_provider_config"
+              name="Providers"
+              parent="menu_thabot_ai_configuration"
+              action="action_thabot_ai_provider_config"
+              sequence="10"/>
+
+</odoo>

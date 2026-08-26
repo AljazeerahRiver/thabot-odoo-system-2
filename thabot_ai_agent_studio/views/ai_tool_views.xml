@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_thabot_ai_tool_list" model="ir.ui.view">
+        <field name="name">thabot.ai.tool.list</field>
+        <field name="model">thabot.ai.tool</field>
+        <field name="arch" type="xml">
+            <list string="Tools">
+                <field name="name"/>
+                <field name="technical_name"/>
+                <field name="implementation_type"/>
+                <field name="target_model"/>
+                <field name="target_method"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_thabot_ai_tool_form" model="ir.ui.view">
+        <field name="name">thabot.ai.tool.form</field>
+        <field name="model">thabot.ai.tool</field>
+        <field name="arch" type="xml">
+            <form string="Tool">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Look up a camera warranty"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="technical_name" placeholder="e.g. lookup_camera_warranty"/>
+                            <field name="implementation_type"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="target_model_id"
+                                   invisible="implementation_type != 'odoo_model_method'"
+                                   required="implementation_type == 'odoo_model_method'"/>
+                            <field name="target_model" invisible="1"/>
+                            <field name="target_method"
+                                   invisible="implementation_type == 'http_endpoint'"
+                                   required="implementation_type in ('odoo_model_method', 'python_method')"/>
+                            <field name="endpoint_url"
+                                   invisible="implementation_type != 'http_endpoint'"
+                                   required="implementation_type == 'http_endpoint'"/>
+                            <field name="http_method" invisible="implementation_type != 'http_endpoint'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description"
+                                   placeholder="Explain to the model when to call this tool."/>
+                        </page>
+                        <page string="Parameters" name="parameters">
+                            <field name="parameters_schema" widget="ace" options="{'mode': 'json'}"/>
+                        </page>
+                        <page string="Agents" name="agents">
+                            <field name="agent_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="provider"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_thabot_ai_tool_search" model="ir.ui.view">
+        <field name="name">thabot.ai.tool.search</field>
+        <field name="model">thabot.ai.tool</field>
+        <field name="arch" type="xml">
+            <search string="Tools">
+                <field name="name"/>
+                <field name="technical_name"/>
+                <field name="target_model"/>
+                <filter name="filter_inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter name="group_implementation" string="Implementation" domain="[]"
+                            context="{'group_by': 'implementation_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_thabot_ai_tool" model="ir.actions.act_window">
+        <field name="name">Tools</field>
+        <field name="res_model">thabot.ai.tool</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first tool</p>
+            <p>Tools are the functions your agents can call to read or update Odoo data.</p>
+        </field>
+    </record>
+
+</odoo>
