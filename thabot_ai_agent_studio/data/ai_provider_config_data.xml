@@ -9,7 +9,7 @@
             <field name="api_key_parameter">thabot_ai_agent_studio.gemini_api_key</field>
             <field name="api_key_env_var">GEMINI_API_KEY</field>
             <field name="api_base_url">https://generativelanguage.googleapis.com/v1beta</field>
-            <field name="default_model">gemini-2.5-flash</field>
+            <field name="default_model">gemini-3.7-flash</field>
             <field name="timeout">60</field>
         </record>
 
@@ -22,7 +22,7 @@
             <field name="api_key_env_var">VERTEX_AI_ACCESS_TOKEN</field>
             <field name="api_base_url">https://{location}-aiplatform.googleapis.com/v1</field>
             <field name="gcp_location">us-central1</field>
-            <field name="default_model">gemini-2.5-flash</field>
+            <field name="default_model">gemini-3.7-flash</field>
             <field name="timeout">60</field>
         </record>
 

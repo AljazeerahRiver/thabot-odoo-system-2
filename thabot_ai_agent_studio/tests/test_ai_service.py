@@ -174,7 +174,7 @@ class TestThabotAiService(TransactionCase):
                 "name": "Gemini Mapping",
                 "provider": "gemini",
                 "api_base_url": "https://generativelanguage.googleapis.com/v1beta",
-                "default_model": "gemini-2.5-flash",
+                "default_model": "gemini-3.7-flash",
             }
         )
         gemini_agent = self.env["thabot.ai.agent"].create(
@@ -183,7 +183,7 @@ class TestThabotAiService(TransactionCase):
                 "code": "gemini_mapping_agent",
                 "provider": "gemini",
                 "provider_config_id": gemini_config.id,
-                "model_name": "gemini-2.5-flash",
+                "model_name": "gemini-3.7-flash",
                 "temperature": 0.3,
                 "max_tokens": 256,
                 "tool_ids": [(6, 0, [self.tool.id])],
@@ -207,13 +207,13 @@ class TestThabotAiService(TransactionCase):
             payload["tools"][0]["functionDeclarations"][0]["name"], "warranty_lookup"
         )
         self.assertEqual(
-            provider._endpoint("gemini-2.5-flash"),
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+            provider._endpoint("gemini-3.7-flash"),
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.7-flash:generateContent",
         )
 
     def test_gemini_response_parsing(self):
         gemini_config = self.env["thabot.ai.provider.config"].create(
-            {"name": "Gemini Parsing", "provider": "gemini", "default_model": "gemini-2.5-flash"}
+            {"name": "Gemini Parsing", "provider": "gemini", "default_model": "gemini-3.7-flash"}
         )
         provider = GeminiProvider(self.env, gemini_config)
         response = provider._parse_response(
@@ -250,7 +250,7 @@ class TestThabotAiService(TransactionCase):
                 "name": "Gemini No Key",
                 "provider": "gemini",
                 "api_key_parameter": "thabot_ai_agent_studio.missing_key",
-                "default_model": "gemini-2.5-flash",
+                "default_model": "gemini-3.7-flash",
             }
         )
         provider = GeminiProvider(self.env, gemini_config)
@@ -264,9 +264,9 @@ class TestThabotAiService(TransactionCase):
                 "name": "Vertex No Project",
                 "provider": "vertex_ai",
                 "api_base_url": "https://{location}-aiplatform.googleapis.com/v1",
-                "default_model": "gemini-2.5-flash",
+                "default_model": "gemini-3.7-flash",
             }
         )
         provider = PROVIDER_REGISTRY["vertex_ai"](self.env, vertex_config)
         with self.assertRaises(UserError):
-            provider._endpoint("gemini-2.5-flash")
+            provider._endpoint("gemini-3.7-flash")

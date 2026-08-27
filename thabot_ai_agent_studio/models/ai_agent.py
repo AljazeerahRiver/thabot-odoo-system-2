@@ -40,7 +40,7 @@ class ThabotAiAgent(models.Model):
     model_name = fields.Char(
         string="Model",
         required=True,
-        default="gemini-2.5-flash",
+        default="gemini-3.7-flash",
         tracking=True,
     )
     system_prompt = fields.Text(

@@ -17,7 +17,7 @@ class TestThabotAiModels(TransactionCase):
                 "name": "Gemini Test Config",
                 "provider": "gemini",
                 "api_key_parameter": "thabot_ai_agent_studio.test_gemini_api_key",
-                "default_model": "gemini-2.5-flash",
+                "default_model": "gemini-3.7-flash",
                 "price_per_1k_input": 0.1,
                 "price_per_1k_output": 0.4,
             }
@@ -28,7 +28,7 @@ class TestThabotAiModels(TransactionCase):
                 "code": "test_camera_agent",
                 "provider": "gemini",
                 "provider_config_id": cls.config.id,
-                "model_name": "gemini-2.5-flash",
+                "model_name": "gemini-3.7-flash",
                 "system_prompt": "You support Thabot smart cameras.",
                 "state": "active",
             }
@@ -198,7 +198,7 @@ class TestThabotAiModels(TransactionCase):
                     "name": "Second Gemini Default",
                     "provider": "gemini",
                     "is_default": True,
-                    "default_model": "gemini-2.5-pro",
+                    "default_model": "gemini-3.1-pro-preview",
                 }
             )
 
@@ -226,7 +226,7 @@ class TestThabotAiModels(TransactionCase):
                 "provider": "vertex_ai",
                 "api_base_url": "https://{location}-aiplatform.googleapis.com/v1",
                 "gcp_location": "europe-west4",
-                "default_model": "gemini-2.5-flash",
+                "default_model": "gemini-3.7-flash",
             }
         )
         self.assertEqual(
