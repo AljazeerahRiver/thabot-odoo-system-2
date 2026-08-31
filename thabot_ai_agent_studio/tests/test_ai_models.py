@@ -178,6 +178,60 @@ class TestThabotAiModels(TransactionCase):
         )
         self.assertLess(first.sequence, second.sequence)
 
+    def test_batch_created_messages_get_distinct_sequences(self):
+        """Messages created in one call must not collapse onto the same sequence."""
+        conversation = self.env["thabot.ai.conversation"].create({"agent_id": self.agent.id})
+        messages = self.env["thabot.ai.message"].create(
+            [
+                {"conversation_id": conversation.id, "role": "user", "content": "1"},
+                {"conversation_id": conversation.id, "role": "assistant", "content": "2"},
+                {"conversation_id": conversation.id, "role": "user", "content": "3"},
+            ]
+        )
+        sequences = messages.mapped("sequence")
+        self.assertEqual(len(set(sequences)), 3, "each message needs its own sequence")
+        self.assertEqual(sequences, sorted(sequences))
+        # Ordering must reflect insertion order, which is what _order relies on.
+        self.assertEqual(
+            conversation.message_ids.sorted(lambda m: (m.sequence, m.id)).mapped("content"),
+            ["1", "2", "3"],
+        )
+
+    def test_batch_sequences_continue_after_existing_messages(self):
+        conversation = self.env["thabot.ai.conversation"].create({"agent_id": self.agent.id})
+        existing = self.env["thabot.ai.message"].create(
+            {"conversation_id": conversation.id, "role": "user", "content": "first"}
+        )
+        batch = self.env["thabot.ai.message"].create(
+            [
+                {"conversation_id": conversation.id, "role": "assistant", "content": "2"},
+                {"conversation_id": conversation.id, "role": "user", "content": "3"},
+            ]
+        )
+        self.assertTrue(all(seq > existing.sequence for seq in batch.mapped("sequence")))
+        self.assertEqual(len(set(batch.mapped("sequence"))), 2)
+
+    def test_batch_sequences_are_independent_per_conversation(self):
+        first_conversation = self.env["thabot.ai.conversation"].create(
+            {"agent_id": self.agent.id}
+        )
+        second_conversation = self.env["thabot.ai.conversation"].create(
+            {"agent_id": self.agent.id}
+        )
+        messages = self.env["thabot.ai.message"].create(
+            [
+                {"conversation_id": first_conversation.id, "role": "user", "content": "a1"},
+                {"conversation_id": second_conversation.id, "role": "user", "content": "b1"},
+                {"conversation_id": first_conversation.id, "role": "user", "content": "a2"},
+            ]
+        )
+        first_sequences = messages.filtered(
+            lambda m: m.conversation_id == first_conversation
+        ).mapped("sequence")
+        self.assertEqual(len(set(first_sequences)), 2)
+        # A busy conversation must not push the other one's numbering forward.
+        self.assertEqual(second_conversation.message_ids.mapped("sequence"), [10])
+
     def test_conversation_send_prompt_requires_content(self):
         conversation = self.env["thabot.ai.conversation"].create({"agent_id": self.agent.id})
         with self.assertRaises(UserError):
@@ -243,3 +297,112 @@ class TestThabotAiModels(TransactionCase):
             {"name": "No config", "code": "no_config_agent", "provider": "gemini"}
         )
         self.assertEqual(agent.get_provider_config(), self.config)
+
+    # -- cost ---------------------------------------------------------------
+    def test_cost_uses_default_config_when_agent_has_none(self):
+        """An agent without an explicit config still bills against the default one.
+
+        Reading ``agent_id.provider_config_id`` directly reported a silent 0.0 here,
+        even though the very same fallback config was used to bill the tokens.
+        """
+        self.config.is_default = True
+        agent = self.env["thabot.ai.agent"].create(
+            {
+                "name": "Fallback billing",
+                "code": "fallback_billing_agent",
+                "provider": "gemini",
+                "state": "active",
+            }
+        )
+        self.assertFalse(agent.provider_config_id)
+        conversation = self.env["thabot.ai.conversation"].create({"agent_id": agent.id})
+        message = self.env["thabot.ai.message"].create(
+            {
+                "conversation_id": conversation.id,
+                "role": "assistant",
+                "content": "Billed",
+                "prompt_tokens": 1000,
+                "completion_tokens": 500,
+            }
+        )
+        self.assertEqual(message.provider_config_id, self.config)
+        # 1000/1000 * 0.1 + 500/1000 * 0.4 = 0.3
+        self.assertAlmostEqual(message.cost, 0.3, places=6)
+        self.assertAlmostEqual(conversation.total_cost, 0.3, places=6)
+
+    def test_cost_snapshot_survives_price_changes(self):
+        """Historical cost must not be rewritten when tariffs change later."""
+        conversation = self.env["thabot.ai.conversation"].create({"agent_id": self.agent.id})
+        message = self.env["thabot.ai.message"].create(
+            {
+                "conversation_id": conversation.id,
+                "role": "assistant",
+                "content": "Old price",
+                "prompt_tokens": 1000,
+                "completion_tokens": 0,
+            }
+        )
+        self.assertAlmostEqual(message.cost, 0.1, places=6)
+        snapshot = message.provider_config_id
+        self.assertEqual(snapshot, self.config)
+        # Point the agent at a new, more expensive configuration.
+        new_config = self.env["thabot.ai.provider.config"].create(
+            {
+                "name": "Gemini New Tariff",
+                "provider": "gemini",
+                "api_key_parameter": "thabot_ai_agent_studio.test_new_tariff_key",
+                "price_per_1k_input": 9.0,
+                "price_per_1k_output": 9.0,
+            }
+        )
+        self.agent.provider_config_id = new_config
+        message.invalidate_recordset()
+        self.assertEqual(message.provider_config_id, snapshot)
+        self.assertAlmostEqual(message.cost, 0.1, places=6)
+
+    def test_cost_is_zero_without_any_config(self):
+        self.env["thabot.ai.provider.config"].search(
+            [("provider", "=", "openai")]
+        ).write({"active": False})
+        agent = self.env["thabot.ai.agent"].create(
+            {
+                "name": "Unconfigured",
+                "code": "unconfigured_agent",
+                "provider": "openai",
+                "state": "active",
+            }
+        )
+        conversation = self.env["thabot.ai.conversation"].create({"agent_id": agent.id})
+        message = self.env["thabot.ai.message"].create(
+            {
+                "conversation_id": conversation.id,
+                "role": "assistant",
+                "content": "No config",
+                "prompt_tokens": 1000,
+                "completion_tokens": 1000,
+            }
+        )
+        self.assertFalse(message.provider_config_id)
+        self.assertEqual(message.cost, 0.0)
+
+    def test_api_key_input_compute_has_dependencies(self):
+        """The write-only helper must carry an explicit (empty) @api.depends().
+
+        Checking ``field.depends`` alone would prove nothing: Odoo normalises a
+        missing declaration to ``()`` as well. The decorator is what sets ``_depends``
+        on the method itself, so that is what this asserts.
+        """
+        model = self.env["thabot.ai.provider.config"]
+        method = getattr(type(model), "_compute_api_key_input")
+        self.assertTrue(
+            hasattr(method, "_depends"),
+            "_compute_api_key_input must be decorated with @api.depends()",
+        )
+        self.assertEqual(tuple(method._depends), ())
+        field = model._fields["api_key_input"]
+        self.assertTrue(field.compute)
+        self.assertFalse(field.store)
+        # It must still never leak the stored secret.
+        self.config.api_key_input = "secret-value"
+        self.config.invalidate_recordset()
+        self.assertFalse(self.config.api_key_input)
