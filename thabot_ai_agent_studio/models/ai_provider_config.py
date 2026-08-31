@@ -76,7 +76,7 @@ class ThabotAiProviderConfig(models.Model):
         string="API Base URL",
         default=lambda self: DEFAULT_BASE_URLS["gemini"],
     )
-    default_model = fields.Char(default="gemini-2.5-flash", required=True)
+    default_model = fields.Char(default="gemini-3.7-flash", required=True)
     gcp_project = fields.Char(string="GCP Project")
     gcp_location = fields.Char(string="GCP Location", default="us-central1")
     timeout = fields.Integer(default=60, help="HTTP timeout in seconds.")

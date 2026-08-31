@@ -65,7 +65,7 @@
             <field name="code">camera_support</field>
             <field name="provider">gemini</field>
             <field name="provider_config_id" ref="provider_config_gemini"/>
-            <field name="model_name">gemini-2.5-flash</field>
+            <field name="model_name">gemini-3.7-flash</field>
             <field name="temperature">0.4</field>
             <field name="max_tokens">2048</field>
             <field name="state">draft</field>
@@ -91,7 +91,7 @@ Guidelines:
             <field name="code">camera_sales</field>
             <field name="provider">gemini</field>
             <field name="provider_config_id" ref="provider_config_gemini"/>
-            <field name="model_name">gemini-2.5-flash</field>
+            <field name="model_name">gemini-3.7-flash</field>
             <field name="temperature">0.7</field>
             <field name="max_tokens">2048</field>
             <field name="state">draft</field>
