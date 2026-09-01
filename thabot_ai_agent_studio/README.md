@@ -46,9 +46,38 @@ Set the API key in one of the two supported ways — never in source code:
 - **Environment variable**: export `GEMINI_API_KEY` before starting Odoo and leave the
   system parameter empty.
 
-Vertex AI additionally needs a GCP project and location, and expects a short-lived OAuth
-access token (for example the output of `gcloud auth print-access-token`) in
-`thabot_ai_agent_studio.vertex_ai_access_token` or `VERTEX_AI_ACCESS_TOKEN`.
+### Vertex AI access tokens
+
+Vertex AI additionally needs a GCP project and location, and currently expects an OAuth
+access token in `thabot_ai_agent_studio.vertex_ai_access_token` or
+`VERTEX_AI_ACCESS_TOKEN`.
+
+> **Known limitation.** GCP access tokens expire after roughly 60 minutes. A token pasted
+> by hand (for example the output of `gcloud auth print-access-token`) will therefore start
+> returning `401 Unauthorized` about an hour later. Treat the manual token as a
+> development-only convenience, never as a production setup.
+
+For a real deployment the token must be minted from a service account and refreshed
+automatically. That is a deployment concern rather than an Odoo one, and it lives outside
+this addon:
+
+1. **Create a dedicated service account** and grant it only `roles/aiplatform.user` on the
+   project used by the agents. Do not reuse a broadly privileged account.
+2. **Attach it to the workload** running Odoo (Compute Engine instance, GKE workload
+   identity, or Cloud Run service). Attaching the account removes the need to ship a key
+   file at all, which is the safest option.
+3. **Fetch the token from the GCP metadata server at request time** rather than storing a
+   long-lived value, and **cache it with an expiry margin** (refresh once fewer than about
+   five minutes remain) so a token never expires mid-request.
+4. If the workload cannot use an attached account, point
+   `GOOGLE_APPLICATION_CREDENTIALS` at a service-account key file and let `google-auth`
+   handle the refresh. Rotate that key on a schedule; a key file on disk is a standing
+   credential.
+
+The metadata server lives on the link-local address `169.254.169.254`. Keep this
+authentication path strictly separate from any outbound HTTP performed on behalf of an
+agent: credential fetching is infrastructure, not a model-reachable capability, and the
+two must never share a code path or an allowlist.
 
 ## Usage
 

@@ -139,8 +139,11 @@ class ThabotAiProviderConfig(models.Model):
                     )
                 )
 
+    @api.depends()
     def _compute_api_key_input(self):
-        # Never expose the stored secret in the UI.
+        # Never expose the stored secret in the UI. The field depends on nothing on
+        # purpose; an explicit empty depends() keeps Odoo from warning about a
+        # non-stored computed field without dependencies.
         for config in self:
             config.api_key_input = False
 
