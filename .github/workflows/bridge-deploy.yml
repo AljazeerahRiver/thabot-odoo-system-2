@@ -47,7 +47,7 @@ jobs:
             --source bridge \
             --region me-central2 \
             --project "${{ vars.GCP_PROJECT_ID }}" \
-            --service-account "${{ vars.CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT }}" \
+            --service-account "${{ vars.DEV_CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT }}" \
             --ingress internal \
             --no-allow-unauthenticated \
             --set-env-vars="ODOO_URL=${{ vars.ODOO_STAGING_URL }},ODOO_DB=${{ vars.ODOO_STAGING_DB }}" \
@@ -74,7 +74,7 @@ jobs:
             --source bridge \
             --region me-central2 \
             --project "${{ vars.GCP_PROJECT_ID }}" \
-            --service-account "${{ vars.CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT }}" \
+            --service-account "${{ vars.PROD_CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT }}" \
             --ingress internal \
             --no-allow-unauthenticated \
             --set-env-vars="ODOO_URL=${{ vars.ODOO_PRODUCTION_URL }},ODOO_DB=${{ vars.ODOO_PRODUCTION_DB }}" \

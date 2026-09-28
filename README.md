@@ -33,7 +33,8 @@ Configure values in GitHub Actions variables and Google Secret Manager; do not p
 credential values in this repository.
 
 GitHub Actions variables: `GCP_PROJECT_ID`, `GCP_WORKLOAD_IDENTITY_PROVIDER`,
-`GCP_DEPLOY_SERVICE_ACCOUNT`, `CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT`,
+`GCP_DEPLOY_SERVICE_ACCOUNT`, `DEV_CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT`,
+`PROD_CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT`,
 `ODOO_STAGING_URL`, `ODOO_STAGING_DB`,
 `ODOO_STAGING_API_KEY_SECRET`, `DEV_THABOT_API_TOKEN_SECRET`,
 `ODOO_PRODUCTION_URL`, `ODOO_PRODUCTION_DB`, `ODOO_PRODUCTION_API_KEY_SECRET`,
@@ -42,9 +43,10 @@ GitHub Actions variables: `GCP_PROJECT_ID`, `GCP_WORKLOAD_IDENTITY_PROVIDER`,
 Google Secret Manager secrets: a staging Odoo API key, a development Thabot bearer
 token, a production Odoo API key, and a production Thabot bearer token. The workflow
 binds these to `ODOO_API_KEY` and `THABOT_API_TOKEN` at Cloud Run runtime. The bridge
-also reads `ODOO_URL` and `ODOO_DB` as non-secret runtime configuration. Grant the
-Cloud Run runtime service identity access only to the secrets for its environment.
-Do not create an `ODOO_PASSWORD` variable or print/log secret values.
+also reads `ODOO_URL` and `ODOO_DB` as non-secret runtime configuration. Use separate
+development and production runtime service identities, each with access only to its
+own environment's secrets. Do not create an `ODOO_PASSWORD` variable or print/log
+secret values.
 
 ## Deployment
 
