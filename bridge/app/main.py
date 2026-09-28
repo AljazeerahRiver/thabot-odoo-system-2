@@ -4,7 +4,8 @@ from typing import Any, Optional
 from urllib.parse import quote
 
 import requests
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, HTTPException, Query, Request
+from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 
@@ -40,6 +41,28 @@ app = FastAPI(
     redoc_url=None,
     openapi_url=None,
 )
+
+
+@app.middleware("http")
+async def authenticate_request(request: Request, call_next: Any) -> Any:
+    if request.method == "GET" and request.url.path == "/health":
+        return await call_next(request)
+
+    scheme, separator, token = request.headers.get("authorization", "").partition(" ")
+    credentials = (
+        HTTPAuthorizationCredentials(scheme=scheme, credentials=token)
+        if separator and scheme.lower() == "bearer"
+        else None
+    )
+    try:
+        require_client_token(credentials)
+    except HTTPException as error:
+        return JSONResponse(
+            status_code=error.status_code,
+            content={"detail": error.detail},
+            headers={"WWW-Authenticate": "Bearer"} if error.status_code == 401 else None,
+        )
+    return await call_next(request)
 
 
 def require_client_token(
