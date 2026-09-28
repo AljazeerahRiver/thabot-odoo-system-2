@@ -1,0 +1,81 @@
+name: Odoo bridge
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - "bridge/**"
+      - ".github/workflows/bridge-deploy.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: bridge/requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+        working-directory: bridge
+      - run: pytest -q
+        working-directory: bridge
+
+  deploy-dev:
+    if: github.ref == 'refs/heads/dev'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Deploy development service
+        run: |
+          gcloud run deploy dev-odoo-thabot-bridge \
+            --source bridge \
+            --region me-central2 \
+            --project "${{ vars.GCP_PROJECT_ID }}" \
+            --service-account "${{ vars.CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT }}" \
+            --ingress internal \
+            --no-allow-unauthenticated \
+            --set-env-vars="ODOO_URL=${{ vars.ODOO_STAGING_URL }},ODOO_DB=${{ vars.ODOO_STAGING_DB }}" \
+            --set-secrets="ODOO_API_KEY=${{ vars.ODOO_STAGING_API_KEY_SECRET }}:latest,THABOT_API_TOKEN=${{ vars.DEV_THABOT_API_TOKEN_SECRET }}:latest"
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Deploy production service
+        run: |
+          gcloud run deploy prod-odoo-thabot-bridge \
+            --source bridge \
+            --region me-central2 \
+            --project "${{ vars.GCP_PROJECT_ID }}" \
+            --service-account "${{ vars.CLOUD_RUN_RUNTIME_SERVICE_ACCOUNT }}" \
+            --ingress internal \
+            --no-allow-unauthenticated \
+            --set-env-vars="ODOO_URL=${{ vars.ODOO_PRODUCTION_URL }},ODOO_DB=${{ vars.ODOO_PRODUCTION_DB }}" \
+            --set-secrets="ODOO_API_KEY=${{ vars.ODOO_PRODUCTION_API_KEY_SECRET }}:latest,THABOT_API_TOKEN=${{ vars.PROD_THABOT_API_TOKEN_SECRET }}:latest"
