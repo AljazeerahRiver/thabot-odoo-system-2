@@ -11,6 +11,8 @@ The bridge exposes only read operations for `res.company`, `hr.employee`, and
 models and methods are selected by fixed server-side routes, not by request parameters.
 Every endpoint except `GET /health` requires a valid `Authorization: Bearer` token.
 The health endpoint performs no Odoo request. No write operation is exposed.
+The image disables HTTP access logs so request URLs cannot expose credentials.
+Do not enable header or body logging in the runtime.
 
 **Thabot must not be connected to the production Odoo environment until the final
 stage, and then only with read-only access.** Use staging credentials for development.
@@ -57,13 +59,14 @@ environment in GitHub. Workload Identity Federation is used for GitHub-to-Google
 authentication; configure the provider and deploy service account variables and grant
 the account the minimum permissions needed to deploy Cloud Run and build the image.
 No service-account JSON key is required.
+Pull requests targeting either branch run tests only and never deploy.
 
 For local, offline tests:
 
 ```bash
 cd bridge
 python -m pip install -r requirements-dev.txt
-pytest -q
+python -m pytest -q
 ```
 
 The tests mock Odoo HTTP calls and never contact a real Odoo instance.

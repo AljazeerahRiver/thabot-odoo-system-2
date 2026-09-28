@@ -1,6 +1,13 @@
 name: Odoo bridge
 
 on:
+  pull_request:
+    branches:
+      - dev
+      - main
+    paths:
+      - "bridge/**"
+      - ".github/workflows/bridge-deploy.yml"
   push:
     branches:
       - dev
@@ -24,11 +31,11 @@ jobs:
           cache-dependency-path: bridge/requirements-dev.txt
       - run: pip install -r requirements-dev.txt
         working-directory: bridge
-      - run: pytest -q
+      - run: python -m pytest -q
         working-directory: bridge
 
   deploy-dev:
-    if: github.ref == 'refs/heads/dev'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     needs: test
     runs-on: ubuntu-latest
     permissions:
@@ -54,7 +61,7 @@ jobs:
             --set-secrets="ODOO_API_KEY=${{ vars.ODOO_STAGING_API_KEY_SECRET }}:latest,THABOT_API_TOKEN=${{ vars.DEV_THABOT_API_TOKEN_SECRET }}:latest"
 
   deploy-prod:
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: test
     runs-on: ubuntu-latest
     environment: production
