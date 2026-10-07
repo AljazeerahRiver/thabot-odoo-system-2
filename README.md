@@ -24,8 +24,11 @@ Start Odoo using your installation's configuration, including its database conne
 and addons path. Configure a provider through **AI Agent Studio → Configuration →
 Providers**, then activate an agent and start a conversation. See the
 [addon guide](thabot_ai_agent_studio/README.md) for provider configuration and usage.
-Provider keys belong in protected Odoo system parameters or environment variables,
-never in source. Live chat sends conversation content to the configured provider.
+Provider keys are stored in `ir.config_parameter`, never in source or on the provider
+record. When that parameter is empty, the addon reads the environment variable named
+by the provider's `api_key_env_var` field; the seeded configurations use
+`GEMINI_API_KEY` and `VERTEX_AI_ACCESS_TOKEN`. Live chat sends conversation content
+to the configured provider.
 
 **Bridge:** Python 3.12 is the version used by CI and the Docker image. From the
 repository root, create an isolated environment and install the bridge dependencies:
@@ -46,7 +49,7 @@ For data reads, supply these environment variables through a secure local mechan
 
 | Variable | Purpose |
 |---|---|
-| `THABOT_API_TOKEN` | Shared client bearer token; clients send `Authorization: Bearer <token>`. |
+| `THABOT_API_TOKEN` | Shared client bearer token; clients use the `Authorization` header with the `Bearer` scheme. |
 | `ODOO_URL` | Approved staging Odoo base URL supporting `/json/2/...`. |
 | `ODOO_DB` | Staging database name. |
 | `ODOO_API_KEY` | Odoo API key for a dedicated, least-privilege read-only identity. |
