@@ -1,0 +1,58 @@
+name: ميزة أو مهمة مشروع
+description: سجّل مهمة قابلة للتحقق لمشروع ثابوت
+title: "[مهمة]: "
+labels:
+  - project
+body:
+  - type: input
+    id: owner
+    attributes:
+      label: المسؤول
+      description: اكتب اسم مستخدم GitHub للمسؤول، ثم عيّنه أيضًا من حقل Assignees.
+      placeholder: "@username"
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: الأولوية
+      options:
+        - P1 — عالية
+        - P2 — متوسطة
+        - P3 — منخفضة
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: معيار القبول
+      description: اكتب نتيجة محددة يمكن مراجعتها أو اختبارها.
+      placeholder: "مثال: ينجح اختبار ... ويتحقق ..."
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: الاختبارات والتحقق
+      description: ما الاختبار أو الدليل الذي يثبت استيفاء معيار القبول؟
+    validations:
+      required: true
+  - type: dropdown
+    id: initial_status
+    attributes:
+      label: الحالة الابتدائية
+      options:
+        - قائمة الانتظار
+        - قيد التنفيذ
+        - للمراجعة
+        - مكتملة
+        - متوقفة
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: العوائق والمخاطر
+      description: اذكر العائق والخطوة المطلوبة إذا كانت المهمة متوقفة، أو اكتب «لا يوجد».
+    validations:
+      required: true
