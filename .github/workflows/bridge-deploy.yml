@@ -24,7 +24,7 @@ jobs:
           cache-dependency-path: bridge/requirements-dev.txt
       - run: pip install -r requirements-dev.txt
         working-directory: bridge
-      - run: pytest -q
+      - run: python -m pytest -q
         working-directory: bridge
 
   deploy-dev:
